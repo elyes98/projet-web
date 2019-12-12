@@ -1,8 +1,10 @@
 <?PHP
-include "core/commandecore.php";
+include "../core/commandecore.php";
+
+$id=$_GET['id'];
 $commandeC=new commandecore();
-	if (isset($_POST["ref"])) {
-		$commandeC->deleteCommande($_POST["ref"]);
-		header('Location:listeCommande.php');
-	}
+$commandeC->deleteCommande($id);
+
+header('Location:listeCommande.php');
+	
 	?>

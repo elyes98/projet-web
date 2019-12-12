@@ -46,6 +46,7 @@ class commandecore
 	function getAllCommandes()
 	{
 		$sql = "SElECT * From commande inner join utilisateur on commande.cinUtilisateur =utilisateur.cin";
+		
 		$db = config::getConnexion();
 		try {
 			$liste = $db->query($sql);
@@ -54,28 +55,50 @@ class commandecore
 			die('Erreur: ' . $e->getMessage());
 		}
 	}
-	function deleteCommande($ref)
+	
+
+	function updatecommande($date,$ref)
 	{
-		//connection au serveur
-		$cnx = mysql_connect( "localhost", "root", "" ) ;
- 
-		//sélection de la base de données:
-		$db  = mysql_select_db( "goombas" ) ;
-	   
+
+		$sql = "UPDATE commande SET  date=:date WHERE ref =:ref";
+		$db = new PDO('mysql:host=localhost;dbname=goombas', 'root', '');
+
+		$req = $db->prepare($sql);
+		$req->bindValue(':ref', $ref);
+		$req->bindValue(':date', $date);
+
+		try { 		$req->execute();
+
+		} catch (Exception $e) {
+			echo 'Erreur: ' . $e->getMessage();
+		}
+    }
+
+	function deletecommande($ref)
+	{
 		$sql = "DELETE FROM commande where ref= :ref";
-		$db = config::getConnexion();
+		$db = new PDO('mysql:host=localhost;dbname=goombas', 'root', '');
 		$req = $db->prepare($sql);
 		$req->bindValue(':ref', $ref);
 		try {
 			$req->execute();
-			// header('Location: index.php');
 		} catch (Exception $e) {
 			die('Erreur: ' . $e->getMessage());
 		}
 	}
-
 	
 
-	
+	function trie(){
+		$sql="SELECT * from commande order by date desc";
+		$db = new PDO('mysql:host=localhost;dbname=goombas', 'root', '');
+		try{
+		$liste=$db->query($sql);
+		return $liste;
+		}
+        catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+        }
+
+    }
 
 }

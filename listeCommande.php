@@ -8,15 +8,8 @@ $listeCommande = $commandeC->getAllCommandes();
 
 	
 
-	<?PHP
-	foreach ($listeCommande as $row) {
-		?>
-		
-		<?php
-
-	}
-
-	?>
+	
+	
 
 
 
@@ -159,27 +152,52 @@ RSS Feed: https://feeds.feedburner.com/Free-templateco
 		
 		<td>supprimer</td>
 		<td>modifier</td>
-	</tr>
+  </tr>
+  <?PHP
+	foreach ($listeCommande as $row) {
+		?>
+		
 	<tr>
 			
 			<td><?PHP echo $row['cinUtilisateur']; ?></td>
 			<td><?PHP echo $row['prix'] ; ?></td>
 			<td><?PHP echo $row['description']; ?></td>
-			<td><?PHP echo $row['date']; ?></td>
+      <td><?PHP echo $row['date']; ?></td>
+      
+      
 	
-			<td>
-				<form method="POST" action="supprimcom.php">
+		
+				<form method="POST" action="suppTable.php">
+        <td>
 					<input type="submit" name="supprimer" value="supprimer">
-					<input type="hidden" name="Cin" value="<?PHP echo $row['cinUtilisateur'];  ?>">
+					<input type="hidden" name="ref" value="<?PHP echo $row['ref'];  ?>">
 				</form>
-			</td>
-			<td><a href="modifierCommande.php?cinUtilisateur=<?PHP echo $row['cinUtilisateur']; ?>">
-					Modifier</a></td>
-		</tr>
+      </td>
+      
+      <form action=" modifiercommande.php" method="POST" >
+			                                <td>
+                                            <input type="hidden" name="ref" value="<?PHP echo $row['ref'];  ?>">
+                                             <input type="submit" name="modifier" value="modifier"> 
+                                             </form>
+                                            </td>
+                                    
+		
+          
+    </tr>
+    <?php
+
+}
+
+?>
 		</table>
 			
       </form>
        </div>
+         
+      <form method="POST" action="pdf.php">
+                                <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-print" aria-hidden="true"></i></button>
+                                <input type="hidden" value="<?PHP echo $row['ref']; ?>" name="ref">
+                            </form>
               
  </div>
 	  </section> <!-- .section -->
