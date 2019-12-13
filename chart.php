@@ -1,9 +1,14 @@
 <?PHP
 include "../Core/reservationAdmin.php";
+include "../Core/utilisateurAdmin.php";
 include "../config.php";
 $comptes = new reservationAdmin();
-$liste=$comptes->getNewReservations();
-$_SESSION["test"]="calendar";
+$liste = $comptes->getMostReservation();
+$l = $comptes->getStatReservation();
+
+$nb=0;
+$nbMale=0;
+$nbFemale=0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +22,7 @@ $_SESSION["test"]="calendar";
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Clietes</title>
+    <title>Charts</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -39,6 +44,66 @@ $_SESSION["test"]="calendar";
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
+    <style>
+    
+</style>
+<script>
+    window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Most active clients"
+	},
+	axisY: {
+		title: "CIN of clients"
+	},
+	data: [{        
+		type: "column",  
+		showInLegend: true, 
+		legendMarkerColor: "grey",
+		legendText: "",
+		dataPoints: [ 
+            <?PHP
+            foreach($liste as $row)
+{    
+    ?> 
+            { y: <?PHP echo $row['nb']; ?>, label: <?PHP echo $row['cinUtilisateur']; ?> },
+            <?PHP } ?>   
+			
+		]
+	}]
+});
+chart.render();
+
+var chart = new CanvasJS.Chart("chartContainer2", {
+	animationEnabled: true,
+	title: {
+		text: "Differentes gender reservations "
+	},
+	data: [{
+		type: "pie",
+		startAngle: 240,
+		yValueFormatString: "##0.00\"%\"",
+		indexLabel: "{label} {y}",
+		dataPoints: [
+            <?PHP 
+           foreach($l as $r)
+           {
+?>
+			{y: <?PHP echo $r['nb'];?>, label: <?PHP echo $r['nbPlaces'];?>},
+		    <?PHP 
+           }
+?>
+		]
+	}]
+});
+chart.render();
+alert(<?PHP echo $nbMale; ?>);
+alert(<?PHP echo $nbFemale; ?>);
+}
+</script>
 
 </head>
 
@@ -46,50 +111,126 @@ $_SESSION["test"]="calendar";
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
         <header class="header-mobile d-block d-lg-none">
-                <div class="header-mobile__bar">
-                    <div class="container-fluid">
-                        <div class="header-mobile-inner">
-                            <a class="logo" href="index.html">
-                                <img src="images/icon/goombas.jpg" alt="goombas" />
-                            </a>
-                            <button class="hamburger hamburger--slider" type="button">
-                                <span class="hamburger-box">
-                                    <span class="hamburger-inner"></span>
-                                </span>
-                            </button>
-                        </div>
+            <div class="header-mobile__bar">
+                <div class="container-fluid">
+                    <div class="header-mobile-inner">
+                        <a class="logo" href="index.html">
+                            <img src="images/icon/logo.png" alt="CoolAdmin" />
+                        </a>
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
                     </div>
                 </div>
-                <nav class="navbar-mobile">
-                    <div class="container-fluid">
-                        <ul class="navbar-mobile__list list-unstyled">
-                            <li class="has-sub">
-                                    <a class="js-arrow" href="index.html">
-                                            <i class="fas fa-tachometer-alt"></i>Menu</a>
-                                        </li>
-                                        <li>
-                                          <a href="table.html">
-                                            <i class="fas fa-table"></i>Clients</a>
-                                        </li>
-                                        <li>
-                                          <a href="calendar.html">
-                                            <i class="fas fa-calendar-alt"></i>Calendrier</a>
-                                        </li>
-                                        <li class="has-sub">
-                                          <a class="js-arrow" href="commandes.html">
-                                            <i class="fas fa-desktop"></i>Commandes</a>
-                                        </li>
-                                      </ul>
-                    </div>
-                </nav>
-            </header>
+            </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="index.html">Dashboard 1</a>
+                                </li>
+                                <li>
+                                    <a href="index2.html">Dashboard 2</a>
+                                </li>
+                                <li>
+                                    <a href="index3.html">Dashboard 3</a>
+                                </li>
+                                <li>
+                                    <a href="index4.html">Dashboard 4</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="chart.html">
+                                <i class="fas fa-chart-bar"></i>Charts</a>
+                        </li>
+                        <li>
+                            <a href="table.html">
+                                <i class="fas fa-table"></i>Tables</a>
+                        </li>
+                        <li>
+                            <a href="form.html">
+                                <i class="far fa-check-square"></i>Forms</a>
+                        </li>
+                        <li>
+                            <a href="calendar.html">
+                                <i class="fas fa-calendar-alt"></i>Calendar</a>
+                        </li>
+                        <li>
+                            <a href="map.html">
+                                <i class="fas fa-map-marker-alt"></i>Maps</a>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-copy"></i>Pages</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="login.html">Login</a>
+                                </li>
+                                <li>
+                                    <a href="register.html">Register</a>
+                                </li>
+                                <li>
+                                    <a href="forget-pass.html">Forget Password</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-desktop"></i>UI Elements</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="button.html">Button</a>
+                                </li>
+                                <li>
+                                    <a href="badge.html">Badges</a>
+                                </li>
+                                <li>
+                                    <a href="tab.html">Tabs</a>
+                                </li>
+                                <li>
+                                    <a href="card.html">Cards</a>
+                                </li>
+                                <li>
+                                    <a href="alert.html">Alerts</a>
+                                </li>
+                                <li>
+                                    <a href="progress-bar.html">Progress Bars</a>
+                                </li>
+                                <li>
+                                    <a href="modal.html">Modals</a>
+                                </li>
+                                <li>
+                                    <a href="switch.html">Switchs</a>
+                                </li>
+                                <li>
+                                    <a href="grid.html">Grids</a>
+                                </li>
+                                <li>
+                                    <a href="fontawesome.html">Fontawesome Icon</a>
+                                </li>
+                                <li>
+                                    <a href="typo.html">Typography</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a href="#">
-                        <img src="images/icon/goombas.jpg" alt="goombas" />
+                    <img src="images/icon/goombas.jpg" alt="Cool Admin" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
@@ -258,7 +399,7 @@ $_SESSION["test"]="calendar";
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                                <img src="images/icon/admin.jpg" alt="admin" />
+                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">john doe</a>
@@ -267,7 +408,7 @@ $_SESSION["test"]="calendar";
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/admin.jpg" alt="John Doe" />
+                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -292,7 +433,7 @@ $_SESSION["test"]="calendar";
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="login.html">
+                                                <a href="#">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -307,68 +448,38 @@ $_SESSION["test"]="calendar";
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
-            <a href="calendarConfirmer.php"> <input type="button" value="reservations approuve"></a>
-                       <a href="calendarAnnuler.php"> <input type="button" value="reservations annule"></a>
-                       <br> <br>
-
-        <div class="row">
-                           <div class="table-responsive table--no-card m-b-30">
-                                    <table class="table table-borderless table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                
-                                                <th>date</th>
-                                                <th>nb places</th>
-                                                <th>Description</th>
-                                                <th>Temps</th>
-                                                <th>cin client</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?PHP
-	                                        foreach ($liste as $row) {
-		                                ?>
-		                                <tr>
-			                                
-			                                <td><?PHP echo $row['date']; ?></td>
-			                                <td><?PHP echo $row['nbPlaces']; ?></td>
-			                                <td><?PHP echo $row['description']; ?></td>
-                                            <td><?PHP echo $row['tempsDebut'];?>-<?PHP echo $row['tempsFin']; ?></td>
-                                            <td><?PHP echo $row['cinUtilisateur']; ?></td>
-                                            <form action="approuverRes.php" method="POST" >
-			                                <td>
-                                            <input type="hidden" name="ref" value="<?PHP echo $row['ref'];  ?>">
-                                             <input type="submit" name="approuver" value="approuver"> 
-                                             </form>
-                                            </td>
-                                            <form action="annulerReser.php" method="POST" >
-                                            <td>
-                                            <input type="hidden" name="ref" value="<?PHP echo $row['ref'];  ?>">
-                                            <input type="submit" name="supprimer" value="annuler">
-                                            </td>
-                                            </form>
-			                                
-		</tr>
-
-                                        
-                                        <?PHP
-    }    
-    
-	?>
-                                   </tbody> </table>
-                                   
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                            <div class="au-card m-b-30">
+                            <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Clients Reservations</h3>
+                                        <div id="chartContainer" style="height: 250px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    </div>
+    </div>                         
+</div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Difference between gender reservations</h3>
+                                        <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                                    </div>
                                 </div>
-                                
                             </div>
-                            
-                        
                         </div>
-                            
-                           
+                       
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT-->
         </div>
-  </div>
+        <!-- END PAGE CONTAINER-->
+
+    </div>
+
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
@@ -391,8 +502,12 @@ $_SESSION["test"]="calendar";
     </script>
 
     <!-- Main JS-->
-    <script src="js/main.js"></script>
+     <script src="js/main.js">
+   
+
+     </script> 
 
 </body>
 
 </html>
+<!-- end document-->

@@ -3,6 +3,7 @@ include "../Core/reservationAdmin.php";
 include "../config.php";
 $comptes = new reservationAdmin();
 $liste=$comptes->confirmerReservation();
+$_SESSION["test"]='calendar';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -302,7 +303,7 @@ $liste=$comptes->confirmerReservation();
                                     <table class="table table-borderless table-striped table-earning">
                                         <thead>
                                             <tr>
-                                                <th>REF</th>
+                                                
                                                 <th>date</th>
                                                 <th>nb places</th>
                                                 <th>Description</th>
@@ -317,7 +318,7 @@ $liste=$comptes->confirmerReservation();
 	                                        foreach ($liste as $row) {
 		                                ?>
 		                                <tr>
-			                                <td><?PHP echo $row['ref']; ?></td>
+			                                
 			                                <td><?PHP echo $row['date']; ?></td>
 			                                <td><?PHP echo $row['nbPlaces']; ?></td>
 			                                <td><?PHP echo $row['description']; ?></td>
